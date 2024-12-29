@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface ProductRepository extends MongoRepository<Product, String> {
 
+    List<Product> findByCategoryId(String categoryId);
+
     @Query(value = "{}", fields = "{ 'items': 0 }")
     List<Product> findAllWithoutItems();
 
