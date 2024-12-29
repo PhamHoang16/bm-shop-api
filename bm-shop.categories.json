@@ -1,0 +1,119 @@
+[{
+  "_id": {
+    "$oid": "6770f5e9c3d9a660954724b1"
+  },
+  "name": "VIA: 902, Bất Tử Via - Kháng: BM Page",
+  "_class": "com.example.bmshopapi.entity.Category"
+},
+{
+  "_id": {
+    "$oid": "6770f5e9c3d9a660954724b2"
+  },
+  "name": "TKQC Nolimit - 1500$ - 250$ - 50$ - momo",
+  "_class": "com.example.bmshopapi.entity.Category"
+},
+{
+  "_id": {
+    "$oid": "6770f5e9c3d9a660954724b3"
+  },
+  "name": "Via Philippines (đã lách thuế 5%)",
+  "_class": "com.example.bmshopapi.entity.Category"
+},
+{
+  "_id": {
+    "$oid": "6770f5e9c3d9a660954724b4"
+  },
+  "name": "Tài Khoản Quảng Cáo Via Việt Nam",
+  "_class": "com.example.bmshopapi.entity.Category"
+},
+{
+  "_id": {
+    "$oid": "6770f5e9c3d9a660954724b5"
+  },
+  "name": "Via Indonesia",
+  "_class": "com.example.bmshopapi.entity.Category"
+},
+{
+  "_id": {
+    "$oid": "6770f5e9c3d9a660954724b6"
+  },
+  "name": "Via Thailand",
+  "_class": "com.example.bmshopapi.entity.Category"
+},
+{
+  "_id": {
+    "$oid": "6770f5e9c3d9a660954724b7"
+  },
+  "name": "Via Mỹ - USA, Facebook Tích Xanh",
+  "_class": "com.example.bmshopapi.entity.Category"
+},
+{
+  "_id": {
+    "$oid": "6770f5e9c3d9a660954724b8"
+  },
+  "name": "Page: Cổ, Kháng, nhiều like, lượt mua live stream",
+  "_class": "com.example.bmshopapi.entity.Category"
+},
+{
+  "_id": {
+    "$oid": "6770f5e9c3d9a660954724b9"
+  },
+  "name": "Via Ấn Độ",
+  "_class": "com.example.bmshopapi.entity.Category"
+},
+{
+  "_id": {
+    "$oid": "6770f5e9c3d9a660954724ba"
+  },
+  "name": "Clone & Via Seeding, Spam - Via Scan New",
+  "_class": "com.example.bmshopapi.entity.Category"
+},
+{
+  "_id": {
+    "$oid": "6770f5e9c3d9a660954724bb"
+  },
+  "name": "BM (Tài Khoản Quảng Cáo Doanh Nghiệp)",
+  "_class": "com.example.bmshopapi.entity.Category"
+},
+{
+  "_id": {
+    "$oid": "6770f5e9c3d9a660954724bc"
+  },
+  "name": "Mail",
+  "_class": "com.example.bmshopapi.entity.Category"
+},
+{
+  "_id": {
+    "$oid": "6770f5e9c3d9a660954724bd"
+  },
+  "name": "TKCN Tiktok Ads",
+  "_class": "com.example.bmshopapi.entity.Category"
+},
+{
+  "_id": {
+    "$oid": "6770f5e9c3d9a660954724be"
+  },
+  "name": "Kênh Tiktok",
+  "_class": "com.example.bmshopapi.entity.Category"
+},
+{
+  "_id": {
+    "$oid": "6770f5e9c3d9a660954724bf"
+  },
+  "name": "TKCN Quảng Bá",
+  "_class": "com.example.bmshopapi.entity.Category"
+},
+{
+  "_id": {
+    "$oid": "6770f5e9c3d9a660954724c0"
+  },
+  "name": "BC TikTok Ads",
+  "_class": "com.example.bmshopapi.entity.Category"
+},
+{
+  "_id": {
+    "$oid": "6770f5e9c3d9a660954724c1"
+  },
+  "name": "TKCN Hoàn Tín",
+  "_class": "com.example.bmshopapi.entity.Category"
+}]
