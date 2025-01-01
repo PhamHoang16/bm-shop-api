@@ -26,6 +26,11 @@ public class UserController {
         return ResponseEntity.ok("Deposit successful");
     }
 
+    @GetMapping("/deposit")
+    public ResponseEntity<?> getDepositHistory(@RequestParam String userId) {
+        return ResponseEntity.ok(userService.getDepositHistory(userId));
+    }
+
     @PostMapping
     public ResponseEntity<?> createUser(@RequestBody User user) {
         return ResponseEntity.ok(userRepository.save(user));

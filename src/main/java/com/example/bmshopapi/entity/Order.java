@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -20,6 +21,6 @@ public class Order {
     private String productName;
     private double totalPrice;
     private List<String> items;
-    private String status;
+    @CreatedDate
     private String createdAt;
 }

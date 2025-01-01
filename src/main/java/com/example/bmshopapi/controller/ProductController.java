@@ -5,7 +5,6 @@ import com.example.bmshopapi.entity.Product;
 import com.example.bmshopapi.repository.CategoryRepository;
 import com.example.bmshopapi.repository.OrderRepository;
 import com.example.bmshopapi.service.ProductService;
-import com.example.bmshopapi.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductController {
     private final ProductService productService;
-    private final TransactionService transactionService;
     private final CategoryRepository categoryRepository;
     private final OrderRepository orderRepository;
 

@@ -23,7 +23,6 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
-    private final TransactionRepository transactionRepository;
     private final OrderRepository orderRepository;
 
     public Product saveProduct(Product product) throws IOException {
@@ -127,7 +126,7 @@ public class ProductService {
                 }
                 product.setQuantity(product.getQuantity() - number);
                 productRepository.save(product);
-                Order order = Order.builder().productId(productId).userId(userId).totalPrice(totalPrice).items(items).build();
+                Order order = Order.builder().productName(product.getName()).productId(productId).userId(userId).totalPrice(totalPrice).items(items).build();
                 orderRepository.save(order);
             } else {
                 throw new RuntimeException("Insufficient balance");
