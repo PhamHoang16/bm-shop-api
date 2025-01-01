@@ -3,6 +3,7 @@ package com.example.bmshopapi.controller;
 import com.example.bmshopapi.dto.CategoryDto;
 import com.example.bmshopapi.entity.Product;
 import com.example.bmshopapi.repository.CategoryRepository;
+import com.example.bmshopapi.repository.OrderRepository;
 import com.example.bmshopapi.service.ProductService;
 import com.example.bmshopapi.service.TransactionService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ public class ProductController {
     private final ProductService productService;
     private final TransactionService transactionService;
     private final CategoryRepository categoryRepository;
+    private final OrderRepository orderRepository;
 
     @PostMapping
     public ResponseEntity<?> createProduct(@RequestBody Product product) throws IOException {
@@ -55,8 +57,12 @@ public class ProductController {
     }
 
     @PutMapping("/buy")
-    public ResponseEntity<String> buy(@RequestParam String productId, @RequestParam String userId) {
-        return ResponseEntity.ok(transactionService.buy(productId, userId));
+    public ResponseEntity<?> buy(@RequestParam String productId, @RequestParam String userId, @RequestParam int number) {
+        return ResponseEntity.ok(productService.buy(userId, productId, number));
     }
 
+    @GetMapping("/order")
+    public ResponseEntity<?> getOrder(@RequestParam String userId) {
+        return ResponseEntity.ok(orderRepository.findByUserId(userId));
+    }
 }

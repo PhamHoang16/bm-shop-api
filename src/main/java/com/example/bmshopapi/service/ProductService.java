@@ -2,15 +2,18 @@ package com.example.bmshopapi.service;
 
 import com.example.bmshopapi.dto.CategoryDto;
 import com.example.bmshopapi.entity.Category;
+import com.example.bmshopapi.entity.Order;
 import com.example.bmshopapi.entity.Product;
-import com.example.bmshopapi.repository.CategoryRepository;
-import com.example.bmshopapi.repository.ProductRepository;
+import com.example.bmshopapi.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +22,9 @@ import java.util.stream.Collectors;
 public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final UserRepository userRepository;
+    private final TransactionRepository transactionRepository;
+    private final OrderRepository orderRepository;
 
     public Product saveProduct(Product product) throws IOException {
         return productRepository.save(product);
@@ -100,5 +106,34 @@ public class ProductService {
                 .categoryId(newProduct.getCategoryId())
                 .build();
         return productRepository.save(updatedProduct);
+    }
+
+    @Transactional
+    public List<String> buy(String userId, String productId, int number) {
+        Product product = productRepository.findById(productId).orElseThrow();
+        List<String> items = new ArrayList<>();
+
+        userRepository.findById(userId).ifPresent(user -> {
+            double totalPrice = product.getPrice() * number;
+            if (user.getBalance() >= totalPrice) {
+                user.setBalance(user.getBalance() - totalPrice);
+                userRepository.save(user);
+
+                for (int i = 0; i < number; i++) {
+                    if (product.getItems().isEmpty()) {
+                        throw new RuntimeException("Not enough items in stock");
+                    }
+                    items.add(product.getItems().remove(0));
+                }
+                product.setQuantity(product.getQuantity() - number);
+                productRepository.save(product);
+                Order order = Order.builder().productId(productId).userId(userId).totalPrice(totalPrice).items(items).build();
+                orderRepository.save(order);
+            } else {
+                throw new RuntimeException("Insufficient balance");
+            }
+        });
+
+        return items;
     }
 }

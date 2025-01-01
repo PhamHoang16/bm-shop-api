@@ -27,7 +27,7 @@ public class TransactionService {
     }
 
     @Transactional
-    public String buy(String userId, String productId) {
+    public String buy(String userId, String productId, int number) {
         Product product = productRepository.findById(productId).orElseThrow();
         userRepository.findById(userId).ifPresent(user -> {
             if (user.getBalance() >= product.getPrice()) {
