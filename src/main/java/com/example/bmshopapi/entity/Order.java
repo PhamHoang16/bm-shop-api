@@ -6,7 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -21,6 +23,6 @@ public class Order {
     private String productName;
     private double totalPrice;
     private List<String> items;
-    @CreatedDate
-    private String createdAt;
+    @Field
+    private Date createdAt = new Date();
 }
