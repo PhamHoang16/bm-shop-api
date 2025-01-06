@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 public class Deposit {
     private String id;
     private String userId;
+    private String username;
     private double amount;
     private String detail;
     private LocalDateTime createdAt;

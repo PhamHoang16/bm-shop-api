@@ -60,12 +60,12 @@ public class ProductController {
     }
 
     @GetMapping("/order")
-    public ResponseEntity<?> getOrders(@RequestParam String userId) {
+    public ResponseEntity<?> getOrdersByUser(@RequestParam String userId) {
         return ResponseEntity.ok(productService.getOrders(userId));
     }
 
-    @GetMapping("/order/all")
-    public ResponseEntity<?> getAllOrders() {
-        return ResponseEntity.ok(productService.getAllOrders());
+    @GetMapping("/orders/last-orders")
+    public ResponseEntity<?> getLast10Orders() {
+        return ResponseEntity.ok(productService.getLast10Orders());
     }
 }

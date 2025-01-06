@@ -1,6 +1,7 @@
 package com.example.bmshopapi.service;
 
 import com.example.bmshopapi.dto.CategoryDto;
+import com.example.bmshopapi.dto.OrderListDto;
 import com.example.bmshopapi.entity.Category;
 import com.example.bmshopapi.entity.Order;
 import com.example.bmshopapi.entity.Product;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -102,7 +104,7 @@ public class ProductService {
                 .categoryName(newProduct.getCategoryName())
                 .description(newProduct.getDescription())
                 .price(newProduct.getPrice())
-                .quantity(newProduct.getQuantity())
+                .quantity(newProduct.getItems().size())
                 .items(newProduct.getItems())
                 .categoryId(newProduct.getCategoryId())
                 .build();
@@ -117,9 +119,6 @@ public class ProductService {
         userRepository.findById(userId).ifPresent(user -> {
             double totalPrice = product.getPrice() * number;
             if (user.getBalance() >= totalPrice) {
-                user.setBalance(user.getBalance() - totalPrice);
-                userRepository.save(user);
-
                 for (int i = 0; i < number; i++) {
                     if (product.getItems().isEmpty()) {
                         throw new CustomException("Không đủ số lượng hàng." , "E_002");
@@ -134,6 +133,8 @@ public class ProductService {
                         .createdAt(LocalDateTime.now())
                         .totalPrice(totalPrice).items(items).build();
                 orderRepository.save(order);
+                user.setBalance(user.getBalance() - totalPrice);
+                userRepository.save(user);
             } else {
                 throw new CustomException("Số dư không đủ", "E_003");
             }
@@ -149,11 +150,22 @@ public class ProductService {
         return orders;
     }
 
-    public List<Order> getAllOrders() {
-        List<Order> orders = orderRepository.findAll();
+    public List<OrderListDto> getLast10Orders() {
+        List<Order> orders = orderRepository.findTop10ByOrderByCreatedAtDesc();
         if (orders.isEmpty()) {
             throw new CustomException("Chưa có đơn hàng nào", "E_001");
         }
-        return orders;
+        return orders.stream().map(this::convertToOrderListDto).collect(Collectors.toList());
+
+    }
+
+    private OrderListDto convertToOrderListDto(Order order) {
+        String detail = String.format("Đã mua %s %s", order.getItems().size(), order.getProductName());
+        long time = Duration.between(order.getCreatedAt(), LocalDateTime.now()).toMinutes();
+        return OrderListDto.builder()
+                .username(order.getUsername())
+                .detail(detail)
+                .time(String.format("%s phút trước", time))
+                .build();
     }
 }

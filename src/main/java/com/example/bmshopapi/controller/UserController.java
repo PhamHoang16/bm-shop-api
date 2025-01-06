@@ -41,4 +41,8 @@ public class UserController {
         return ResponseEntity.ok(userRepository.save(user));
     }
 
+    @GetMapping("/deposit/last-deposit")
+    public ResponseEntity<?> getLast10Deposit() {
+        return ResponseEntity.ok(userService.getLast10Deposit());
+    }
 }
