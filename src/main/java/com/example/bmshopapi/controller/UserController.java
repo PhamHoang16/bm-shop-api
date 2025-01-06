@@ -31,6 +31,11 @@ public class UserController {
         return ResponseEntity.ok(userService.getDepositHistory(userId));
     }
 
+    @GetMapping("/deposit/all")
+    public ResponseEntity<?> getAllDepositHistory() {
+        return ResponseEntity.ok(userService.getAllDepositHistory());
+    }
+
     @PostMapping
     public ResponseEntity<?> createUser(@RequestBody User user) {
         return ResponseEntity.ok(userRepository.save(user));

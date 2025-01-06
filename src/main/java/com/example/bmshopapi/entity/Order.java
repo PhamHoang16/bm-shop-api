@@ -8,6 +8,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +24,5 @@ public class Order {
     private String productName;
     private double totalPrice;
     private List<String> items;
-    @Field
-    private Date createdAt = new Date();
+    private LocalDateTime createdAt = LocalDateTime.now();
 }

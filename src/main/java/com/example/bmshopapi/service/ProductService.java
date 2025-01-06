@@ -4,6 +4,7 @@ import com.example.bmshopapi.dto.CategoryDto;
 import com.example.bmshopapi.entity.Category;
 import com.example.bmshopapi.entity.Order;
 import com.example.bmshopapi.entity.Product;
+import com.example.bmshopapi.exception.CustomException;
 import com.example.bmshopapi.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,7 +27,7 @@ public class ProductService {
     private final UserRepository userRepository;
     private final OrderRepository orderRepository;
 
-    public Product saveProduct(Product product) throws IOException {
+    public Product saveProduct(Product product) {
         return productRepository.save(product);
     }
 
@@ -92,7 +94,7 @@ public class ProductService {
         Product product = productRepository.findById(productId).orElse(null);
 
         if (product == null) {
-            throw new RuntimeException("Product not found");
+            throw new CustomException("Không tìm thấy sản phẩm", "E_004");
         }
         Product updatedProduct = Product.builder()
                 .id(productId)
@@ -120,19 +122,38 @@ public class ProductService {
 
                 for (int i = 0; i < number; i++) {
                     if (product.getItems().isEmpty()) {
-                        throw new RuntimeException("Not enough items in stock");
+                        throw new CustomException("Không đủ số lượng hàng." , "E_002");
                     }
                     items.add(product.getItems().remove(0));
                 }
                 product.setQuantity(product.getQuantity() - number);
                 productRepository.save(product);
-                Order order = Order.builder().productName(product.getName()).productId(productId).userId(userId).totalPrice(totalPrice).items(items).build();
+                Order order = Order.builder()
+                        .productName(product.getName())
+                        .productId(productId).userId(userId)
+                        .createdAt(LocalDateTime.now())
+                        .totalPrice(totalPrice).items(items).build();
                 orderRepository.save(order);
             } else {
-                throw new RuntimeException("Insufficient balance");
+                throw new CustomException("Số dư không đủ", "E_003");
             }
         });
-
         return items;
+    }
+
+    public List<Order> getOrders(String userId) {
+        List<Order> orders = orderRepository.findByUserId(userId);
+        if (orders.isEmpty()) {
+            throw new CustomException("Chưa có đơn hàng nào", "E_001");
+        }
+        return orders;
+    }
+
+    public List<Order> getAllOrders() {
+        List<Order> orders = orderRepository.findAll();
+        if (orders.isEmpty()) {
+            throw new CustomException("Chưa có đơn hàng nào", "E_001");
+        }
+        return orders;
     }
 }
