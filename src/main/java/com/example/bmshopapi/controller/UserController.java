@@ -15,14 +15,24 @@ public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;
 
+    @PostMapping("/sign-in")
+    public ResponseEntity<?> signIn(@RequestParam String email, @RequestParam String password) {
+        return ResponseEntity.ok(userService.signIn(email, password));
+    }
+
+    @PostMapping("/sign-up")
+    public ResponseEntity<?> signUp(@RequestBody User user) {
+        return ResponseEntity.ok(userService.signUp(user));
+    }
+
     @GetMapping("{userId}")
     public ResponseEntity<?> getUser(@PathVariable String userId) {
         return ResponseEntity.ok(userService.getUser(userId));
     }
 
     @PutMapping("/deposit")
-    public ResponseEntity<?> deposit(@RequestParam String userId, @RequestParam double amount) {
-        userService.deposit(userId, amount);
+    public ResponseEntity<?> deposit(@RequestParam String username, @RequestParam double amount) {
+        userService.deposit(username, amount);
         return ResponseEntity.ok("Deposit successful");
     }
 

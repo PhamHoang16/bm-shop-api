@@ -24,13 +24,13 @@ public class UserService {
         return userRepository.findById(userId).orElseThrow(() -> new CustomException("Không tìm thấy người dùng", "E_001"));
     }
 
-    public void deposit(String userId, double amount) {
-        userRepository.findById(userId).ifPresent(user -> {
+    public void deposit(String username, double amount) {
+        userRepository.findByUsername(username).ifPresent(user -> {
             user.setBalance(user.getBalance() + amount);
             userRepository.save(user);
         });
         depositRepository.save(Deposit.builder()
-                .userId(userId)
+                .username(username)
                 .amount(amount)
                 .detail("Nạp tiền")
                 .createdAt(LocalDateTime.now())
@@ -71,5 +71,23 @@ public class UserService {
 
     private String formatVnd(double amount) {
         return String.format("%,.0f VND", amount);
+    }
+
+    public boolean signUp(User user) {
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            throw new CustomException("Username đã tồn tại", "E_001");
+        } else if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new CustomException("Email đã tồn tại", "E_002");
+        }
+        userRepository.save(user);
+        return true;
+    }
+
+    public boolean signIn(String email, String password) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new CustomException("Không tìm thấy người dùng", "E_001"));
+        if (!user.getPassword().equals(password)) {
+            throw new CustomException("Sai mật khẩu", "E_002");
+        }
+        return true;
     }
 }
