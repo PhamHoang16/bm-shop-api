@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
@@ -19,5 +20,6 @@ public class Deposit {
     private String username;
     private double amount;
     private String detail;
+    @CreatedDate
     private LocalDateTime createdAt;
 }

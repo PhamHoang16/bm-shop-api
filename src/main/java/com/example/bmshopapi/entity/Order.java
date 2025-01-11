@@ -25,5 +25,6 @@ public class Order {
     private String productName;
     private double totalPrice;
     private List<String> items;
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @CreatedDate
+    private LocalDateTime createdAt;
 }

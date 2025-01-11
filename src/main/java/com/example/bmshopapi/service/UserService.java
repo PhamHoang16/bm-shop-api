@@ -2,6 +2,7 @@ package com.example.bmshopapi.service;
 
 import com.example.bmshopapi.dto.ChangePasswordDto;
 import com.example.bmshopapi.dto.LastDepositDto;
+import com.example.bmshopapi.dto.UpdateUserDto;
 import com.example.bmshopapi.entity.Deposit;
 import com.example.bmshopapi.entity.User;
 import com.example.bmshopapi.exception.CustomException;
@@ -136,5 +137,13 @@ public class UserService {
         } catch (MessagingException e) {
             throw new CustomException("Có lỗi khi gửi mail", "E_001");
         }
+    }
+
+    public User updateUser(String username, UpdateUserDto updateUserDto) {
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new CustomException("Không tìm thấy người dùng", "E_001"));
+        user.setName(updateUserDto.getName());
+        user.setEmail(updateUserDto.getEmail());
+        userRepository.save(user);
+        return user;
     }
 }

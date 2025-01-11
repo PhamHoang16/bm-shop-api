@@ -134,6 +134,7 @@ public class ProductService {
                         .totalPrice(totalPrice).items(items).build();
                 orderRepository.save(order);
                 user.setBalance(user.getBalance() - totalPrice);
+                user.setTotalOrder(user.getTotalOrder() + 1);
                 userRepository.save(user);
             } else {
                 throw new CustomException("Số dư không đủ", "E_003");

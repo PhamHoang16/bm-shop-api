@@ -11,6 +11,5 @@ import java.util.List;
 public interface DepositRepository extends MongoRepository<Deposit, String> {
     List<Deposit> findByUserId(String userId);
 
-    @Query(value = "{}", sort = "{ 'createdAt': -1 }")
     List<Deposit> findTop10ByOrderByCreatedAtDesc();
 }

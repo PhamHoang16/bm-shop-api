@@ -12,6 +12,5 @@ import java.util.List;
 public interface OrderRepository extends MongoRepository<Order, String> {
     List<Order> findByUserId(String userId);
 
-    @Query(value = "{}", sort = "{ 'createdAt': -1 }")
     List<Order> findTop10ByOrderByCreatedAtDesc();
 }
