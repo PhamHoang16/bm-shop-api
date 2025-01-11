@@ -1,5 +1,6 @@
 package com.example.bmshopapi.controller;
 
+import com.example.bmshopapi.dto.ChangePasswordDto;
 import com.example.bmshopapi.entity.User;
 import com.example.bmshopapi.repository.UserRepository;
 import com.example.bmshopapi.service.UserService;
@@ -16,8 +17,8 @@ public class UserController {
     private final UserRepository userRepository;
 
     @PostMapping("/sign-in")
-    public ResponseEntity<?> signIn(@RequestParam String email, @RequestParam String password) {
-        return ResponseEntity.ok(userService.signIn(email, password));
+    public ResponseEntity<?> signIn(@RequestParam String username, @RequestParam String password) {
+        return ResponseEntity.ok(userService.signIn(username, password));
     }
 
     @PostMapping("/sign-up")
@@ -25,9 +26,9 @@ public class UserController {
         return ResponseEntity.ok(userService.signUp(user));
     }
 
-    @GetMapping("{userId}")
-    public ResponseEntity<?> getUser(@PathVariable String userId) {
-        return ResponseEntity.ok(userService.getUser(userId));
+    @GetMapping("{username}")
+    public ResponseEntity<?> getUser(@PathVariable String username) {
+        return ResponseEntity.ok(userService.getUser(username));
     }
 
     @PutMapping("/deposit")
@@ -54,5 +55,15 @@ public class UserController {
     @GetMapping("/deposit/last-deposit")
     public ResponseEntity<?> getLast10Deposit() {
         return ResponseEntity.ok(userService.getLast10Deposit());
+    }
+
+    @PutMapping("/change-password")
+    public ResponseEntity<?> changePassword(@RequestParam String username, @RequestBody ChangePasswordDto changePasswordDto) {
+        return ResponseEntity.ok(userService.changePassword(username, changePasswordDto));
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestParam String email) {
+        return ResponseEntity.ok(userService.resetPassword(email));
     }
 }
