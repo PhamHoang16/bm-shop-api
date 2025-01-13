@@ -29,22 +29,25 @@ public class UserService {
     private final DepositRepository depositRepository;
     private final JavaMailSender mailSender;
 
-
-
     @Value("${spring.mail.username}")
     private String mailFrom;
 
-    public User getUser(String username) {
+    public User getUser(String userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new CustomException("Không tìm thấy người dùng", "E_001"));
+    }
+
+    public User getUserByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(() -> new CustomException("Không tìm thấy người dùng", "E_001"));
     }
 
-    public void deposit(String username, double amount) {
-        userRepository.findByUsername(username).ifPresent(user -> {
-            user.setBalance(user.getBalance() + amount);
-            userRepository.save(user);
-        });
+    public void deposit(String userId, double amount) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException("Không tìm thấy người dùng", "E_001"));
+        user.setBalance(user.getBalance() + amount);
+        userRepository.save(user);
+
         depositRepository.save(Deposit.builder()
-                .username(username)
+                .userId(userId)
+                .username(user.getUsername())
                 .amount(amount)
                 .detail("Nạp tiền")
                 .createdAt(LocalDateTime.now())
@@ -97,16 +100,16 @@ public class UserService {
         return true;
     }
 
-    public boolean signIn(String username, String password) {
+    public String signIn(String username, String password) {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new CustomException("Không tìm thấy người dùng", "E_001"));
         if (!user.getPassword().equals(password)) {
             throw new CustomException("Sai mật khẩu", "E_002");
         }
-        return true;
+        return user.getId();
     }
 
-    public boolean changePassword(String username, ChangePasswordDto changePasswordDto) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new CustomException("Không tìm thấy người dùng", "E_001"));
+    public boolean changePassword(String userId, ChangePasswordDto changePasswordDto) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException("Không tìm thấy người dùng", "E_001"));
         if (!user.getPassword().equals(changePasswordDto.getCurrentPassword())) {
             throw new CustomException("Sai mật khẩu hiện tại", "E_002");
         }
@@ -139,8 +142,8 @@ public class UserService {
         }
     }
 
-    public User updateUser(String username, UpdateUserDto updateUserDto) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new CustomException("Không tìm thấy người dùng", "E_001"));
+    public User updateUser(String userId, UpdateUserDto updateUserDto) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new CustomException("Không tìm thấy người dùng", "E_001"));
         user.setName(updateUserDto.getName());
         user.setEmail(updateUserDto.getEmail());
         userRepository.save(user);

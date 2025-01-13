@@ -38,8 +38,8 @@ public class UserController {
     }
 
     @PutMapping("/change-password")
-    public ResponseEntity<?> changePassword(@RequestParam String username, @RequestBody ChangePasswordDto changePasswordDto) {
-        return ResponseEntity.ok(userService.changePassword(username, changePasswordDto));
+    public ResponseEntity<?> changePassword(@RequestParam String userId, @RequestBody ChangePasswordDto changePasswordDto) {
+        return ResponseEntity.ok(userService.changePassword(userId, changePasswordDto));
     }
 
     @PostMapping("/reset-password")
@@ -47,19 +47,19 @@ public class UserController {
         return ResponseEntity.ok(userService.resetPassword(email));
     }
 
-    @GetMapping("{username}")
-    public ResponseEntity<?> getUser(@PathVariable String username) {
-        return ResponseEntity.ok(userService.getUser(username));
+    @GetMapping("{userId}")
+    public ResponseEntity<?> getUser(@PathVariable String userId) {
+        return ResponseEntity.ok(userService.getUser(userId));
     }
 
-    @PutMapping("{username}")
-    public ResponseEntity<?> updateUser(@PathVariable String username, @RequestBody UpdateUserDto updateUserDto) {
-        return ResponseEntity.ok(userService.updateUser(username, updateUserDto));
+    @PutMapping("{userId}")
+    public ResponseEntity<?> updateUser(@PathVariable String userId, @RequestBody UpdateUserDto updateUserDto) {
+        return ResponseEntity.ok(userService.updateUser(userId, updateUserDto));
     }
 
     @PutMapping("/deposit")
-    public ResponseEntity<?> deposit(@RequestParam String username, @RequestParam double amount) {
-        userService.deposit(username, amount);
+    public ResponseEntity<?> deposit(@RequestParam String userId, @RequestParam double amount) {
+        userService.deposit(userId, amount);
         return ResponseEntity.ok("Deposit successful");
     }
 

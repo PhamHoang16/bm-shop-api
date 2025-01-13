@@ -22,9 +22,9 @@ public class ProductController {
     private final OrderRepository orderRepository;
 
     @PostMapping
-    public ResponseEntity<?> createProduct(@RequestBody Product product) throws IOException {
-        productService.saveProduct(product);
-        return ResponseEntity.ok("");
+    public ResponseEntity<?> createProduct(@RequestBody Product product) {
+        return ResponseEntity.ok(productService.saveProduct(product)
+        );
     }
 
     @GetMapping
@@ -34,13 +34,13 @@ public class ProductController {
     }
 
     @GetMapping("/{productId}")
-    public ResponseEntity<?> getProduct(@PathVariable String productId){
+    public ResponseEntity<?> getProduct(@PathVariable String productId) {
         Product product = productService.getProductById(productId);
         return ResponseEntity.ok(product);
     }
 
     @PutMapping("/{productId}")
-    public ResponseEntity<?> updateProduct(@PathVariable String productId, @RequestBody Product product){
+    public ResponseEntity<?> updateProduct(@PathVariable String productId, @RequestBody Product product) {
         return ResponseEntity.ok(productService.updateProduct(productId, product));
     }
 

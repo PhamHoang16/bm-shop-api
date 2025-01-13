@@ -30,6 +30,9 @@ public class ProductService {
     private final OrderRepository orderRepository;
 
     public Product saveProduct(Product product) {
+        if (productRepository.existsByName(product.getName())) {
+            throw new CustomException("Tên sản phẩm đã tồn tại", "E_005");
+        }
         return productRepository.save(product);
     }
 
@@ -58,38 +61,6 @@ public class ProductService {
                     return response;
                 })
                 .collect(Collectors.toList());
-    }
-
-
-
-    public Product readFileToList(String filePath) throws IOException {
-        Product product = new Product();
-        Path path = Paths.get(filePath);
-        product.setItems(Files.readAllLines(path));
-
-        product.setName("Via philipines 902 live ads");
-        product.setDescription("✔ AE lưu ý via bị cp phone hàng ngày rất nhiều.\n" +
-                "\n" +
-                "✔ Backup tài nguyên vài nhiều via để an toàn.");
-        product.setPrice(139000);
-        product.setQuantity(product.getItems().size());
-        return product;
-    }
-
-    public void readCategory(String filePath) throws IOException {
-        Product product = new Product();
-        Path path = Paths.get("E:/Job/shopping/resources/category_list.txt");
-        List<String> categoryStr = (Files.readAllLines(path));
-
-        List<Category> categories = categoryStr.stream()
-                .map(category -> {
-                    Category category1 = new Category();
-                    category1.setName(category);
-                    return category1;
-                })
-                .collect(Collectors.toList());
-
-        categoryRepository.saveAll(categories);
     }
 
     public Product updateProduct(String productId, Product newProduct) {
@@ -129,6 +100,7 @@ public class ProductService {
                 productRepository.save(product);
                 Order order = Order.builder()
                         .productName(product.getName())
+                        .username(user.getUsername())
                         .productId(productId).userId(userId)
                         .createdAt(LocalDateTime.now())
                         .totalPrice(totalPrice).items(items).build();

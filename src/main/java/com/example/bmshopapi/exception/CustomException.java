@@ -1,5 +1,6 @@
 package com.example.bmshopapi.exception;
 
+
 public class CustomException extends RuntimeException {
     private final String errorCode;
 
